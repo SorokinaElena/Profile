@@ -5,8 +5,12 @@ class ProfileModel {
       this.position = '',
       required this.phone,
       required this.email,
-      this.address = '',
+      this.address = '' ,
       this.description = '',
+      required this.interests,
+      required this.potentialInterests,
+      required this.profileType,
+      required this.links,
       });
 
   String name;
@@ -16,4 +20,8 @@ class ProfileModel {
   String email;
   String address;
   String description;
+  List<String> interests;
+  List<String> potentialInterests;
+  String profileType;
+  List<Map<String, String>> links;
 }

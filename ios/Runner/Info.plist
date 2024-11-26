@@ -45,5 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Это приложение требует доступ к вашей фотогалерее.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Это приложение требует доступ к вашей камере.</string>
 </dict>
 </plist>

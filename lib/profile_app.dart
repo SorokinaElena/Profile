@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profile/profile.dart';
-//import 'package:profile/new_profile_info.dart';
+
 
 class ProfileApp extends StatelessWidget {
   const ProfileApp({super.key});
@@ -12,6 +12,11 @@ class ProfileApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 166, 197, 227),
         ),
+        checkboxTheme: const CheckboxThemeData().copyWith(
+          checkColor: const WidgetStatePropertyAll(
+            Color.fromARGB(255, 73, 83, 92),
+          ),
+        ),
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(11),
@@ -19,12 +24,41 @@ class ProfileApp extends StatelessWidget {
               color: Color.fromARGB(97, 0, 0, 0),
             ),
           ),
+          hintStyle: const TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 16,
+            color: Color.fromARGB(97, 0, 0, 0),
+          ),
+          labelStyle: const TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 14,
+            color: Color.fromARGB(255, 110, 28, 28),
+          ),
+          errorStyle: const TextStyle().copyWith(
+            fontFamily: 'Roboto',
+            fontSize: 14,
+            color: const Color.fromARGB(255, 110, 28, 28),
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: const ButtonStyle().copyWith(
+            textStyle: const WidgetStatePropertyAll(
+              TextStyle(fontSize: 18),
+            ),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: const ButtonStyle().copyWith(
+            textStyle: const WidgetStatePropertyAll(
+              TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+            ),
+          ),
         ),
       ),
       home: Scaffold(
         body: Container(
           width: double.infinity,
-          padding: const EdgeInsets.fromLTRB(5, 60, 5, 10),
+          padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
