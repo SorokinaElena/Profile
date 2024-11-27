@@ -17,6 +17,11 @@ class ProfileApp extends StatelessWidget {
             Color.fromARGB(255, 73, 83, 92),
           ),
         ),
+        /* textTheme: const TextTheme().copyWith(
+          bodyMedium: TextStyle(
+
+          ),
+        ), */
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(11),
@@ -29,11 +34,11 @@ class ProfileApp extends StatelessWidget {
             fontSize: 16,
             color: Color.fromARGB(97, 0, 0, 0),
           ),
-          labelStyle: const TextStyle(
+          /* labelStyle: const TextStyle(
             fontFamily: 'Roboto',
             fontSize: 14,
             color: Color.fromARGB(255, 110, 28, 28),
-          ),
+          ), */
           errorStyle: const TextStyle().copyWith(
             fontFamily: 'Roboto',
             fontSize: 14,

@@ -5,9 +5,9 @@ import 'package:profile/models/profile_model.dart';
 import 'package:profile/interests/interest_item.dart';
 import 'package:profile/interests/new_interest_item.dart';
 import 'package:profile/site_link_item.dart';
-import 'package:profile/avatar_upload.dart';
+//import 'package:profile/avatar_upload.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image/image.dart' as img;
+//import 'package:image/image.dart' as img;
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -22,9 +22,6 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    // setState(() {
-    //   _currentUser.profileType = 'Private';
-    // });
     _loadData();
   }
 
@@ -36,17 +33,22 @@ class _ProfileState extends State<Profile> {
     profileType: 'Private',
     interests: [],
     potentialInterests: [],
-    links: [
+    /* links: [
       {
         'siteName': '',
         'siteLink': '',
       },
-    ],
+    ], */
+    siteNames: [],
+    siteLinks: [],
   );
   String? _savedData;
+  bool isSucsessSave = false;
+  int maxLinksLength = 0;
   String _savedInterests = '';
-  String _savedLinks = '';
   String _savedPotentialInterests = '';
+  String _savedSiteNames = '';
+  String _savedSiteLinks = '';
   File? _image;
   String _imagePath = '';
   final ImagePicker _picker = ImagePicker();
@@ -60,8 +62,6 @@ class _ProfileState extends State<Profile> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _interestController = TextEditingController();
-  /* final TextEditingController _siteNameController = TextEditingController();
-  final TextEditingController _siteLinkController = TextEditingController(); */
 
   final FocusNode _focusNodeName = FocusNode();
   final FocusNode _focusNodeSurname = FocusNode();
@@ -117,16 +117,15 @@ class _ProfileState extends State<Profile> {
   }
 
   void _addInterest(String? interest) {
-    if (interest != null) {
+    if (interest != null || interest!.isNotEmpty) {
       interest = interest.trim();
       if (interest != '') {
-        if (interest.isNotEmpty) {
-          final isValidInterest = textRegex.hasMatch(interest);
-          if (isValidInterest) {
-            setState(() {
-              _currentUser.interests.add(interest!);
-            });
-          } /* else {
+        final isValidInterest = textRegex.hasMatch(interest);
+        if (isValidInterest) {
+          setState(() {
+            _currentUser.interests.add(interest!);
+          });
+        } /* else {
           showDialog(
             context: context,
             builder: (ctx) => AlertDialog(
@@ -145,7 +144,6 @@ class _ProfileState extends State<Profile> {
             ),
           );
         } */
-        }
       }
     }
     _interestController.clear();
@@ -186,47 +184,45 @@ class _ProfileState extends State<Profile> {
 
   void _addLink() {
     setState(() {
-      _currentUser.links.add({
+      _currentUser.siteNames.add('');
+      _currentUser.siteLinks.add('');
+      /* _currentUser.links.add({
         'siteName': '',
         'siteLink': '',
-      });
+      }); */
     });
   }
 
   void _saveSiteName(int index, String value) {
     setState(() {
-      _currentUser.links[index]['siteName'] = value;
-      //_currentUser.links[index]['siteName'] = _siteNameController.text;
+      _currentUser.siteNames[index] = value;
+      //_currentUser.links[index]['siteName'] = value;
     });
     //_siteNameController.clear();
+    //print(_currentUser.siteNames);
   }
 
   void _saveSiteLink(int index, String value) {
     setState(() {
-      _currentUser.links[index]['siteLink'] = value;
-      //_currentUser.links[index]['siteLink'] = _siteLinkController.text;
+      _currentUser.siteLinks[index] = value;
+      // _currentUser.links[index]['siteLink'] = value;
     });
     //_siteLinkController.clear();
+    // print(_currentUser.siteLinks);
   }
-
-  /* TextEditingController _createSiteNameController(int index) {
-    final TextEditingController siteNameController$index =
-        TextEditingController();
-    return siteNameController$index;
-  }
-
-  TextEditingController _createSiteLinkController(int index) {
-    final TextEditingController siteLinkController$index =
-        TextEditingController();
-    return siteLinkController$index;
-  } */
 
   void _deleteLink(int index) {
-    if (_currentUser.links.length > 1) {
-      setState(() {
-        _currentUser.links.removeAt(index);
-      });
+    setState(() {
+      _currentUser.siteNames.removeAt(index);
+      _currentUser.siteLinks.removeAt(index);
+      /* for (int i = 0; i < _currentUser.siteNames.length; i++) {
+      _saveSiteName(i, _currentUser.siteNames[i]);
     }
+    for (int i = 0; i < _currentUser.siteLinks.length; i++) {
+      _saveSiteLink(i, _currentUser.siteLinks[i]);
+    } */
+    });
+    // print(index);
   }
 
   void _saveProfile() {
@@ -242,18 +238,20 @@ class _ProfileState extends State<Profile> {
       _focusNodeDescription.unfocus();
       _focusNodeSiteName.unfocus();
       _focusNodeSiteLink.unfocus();
+      isSucsessSave = true;
     }
-
     /* print(_currentUser.name);
-    print(_nameController.text);
     print(_currentUser.surname);
     print(_currentUser.position);
-    print(_currentUser.links); */
-
-    /* print(_currentUser.link);
-    _currentUser.link?.forEach((key, value) {
-      print('$key: $value');
-    }); */
+    print(_currentUser.phone);
+    print(_currentUser.email);
+    print(_currentUser.address);
+    print(_currentUser.description);
+    print(_currentUser.profileType);
+    print(_currentUser.interests);
+    print(_currentUser.potentialInterests);
+    print(_currentUser.siteNames);
+    print(_currentUser.siteLinks); */
   }
 
   void _resetProfile() {
@@ -269,15 +267,15 @@ class _ProfileState extends State<Profile> {
       _currentUser.profileType = 'Private';
       _currentUser.interests = [];
       _currentUser.potentialInterests = [];
-      _currentUser.links = [
+      /* _currentUser.links = [
         {
           'siteName': '',
           'siteLink': '',
         },
-      ];
+      ]; */
+      _currentUser.siteNames = [];
+      _currentUser.siteLinks = [];
     });
-    _savedInterests = [].toString().trim();
-    _savedPotentialInterests = [].toString().trim();
     _focusNodeName.unfocus();
     _focusNodeSurname.unfocus();
     _focusNodePosition.unfocus();
@@ -289,28 +287,6 @@ class _ProfileState extends State<Profile> {
     _focusNodeSiteLink.unfocus();
     _saveData();
   }
-
-  /*  void _saveNewProfileInfo(ProfileModel value) {
-    setState(() {
-      _currentUser.name = value.name;
-      _currentUser.surname = value.surname;
-      _currentUser.position = value.position;
-      _currentUser.phone = value.phone;
-      _currentUser.email = value.email;
-      _currentUser.address = value.address;
-      _currentUser.description = value.description;
-    });
-  } */
-
-  /* void _changeUserData() {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      useSafeArea: true,
-      context: context,
-      builder: (ctx) =>
-          NewProfileInfo(onAddNewPfofileInfo: _saveNewProfileInfo),
-    );
-  } */
 
   void _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -330,6 +306,20 @@ class _ProfileState extends State<Profile> {
         _addressController.text = _savedData ?? '';
         _savedData = prefs.getString('description');
         _descriptionController.text = _savedData ?? '';
+        _savedData = prefs.getString('name');
+        _currentUser.name = _savedData ?? '';
+        _savedData = prefs.getString('surname');
+        _currentUser.surname = _savedData ?? '';
+        _savedData = prefs.getString('position');
+        _currentUser.position = _savedData ?? '';
+        _savedData = prefs.getString('phone');
+        _currentUser.phone = _savedData ?? '';
+        _savedData = prefs.getString('email');
+        _currentUser.email = _savedData ?? '';
+        _savedData = prefs.getString('address');
+        _currentUser.address = _savedData ?? '';
+        _savedData = prefs.getString('description');
+        _currentUser.description = _savedData ?? '';
         _savedData = prefs.getString('profileType');
         _currentUser.profileType = _savedData ?? 'Private';
         _savedData = prefs.getString('interests');
@@ -341,18 +331,33 @@ class _ProfileState extends State<Profile> {
         _currentUser.potentialInterests = _savedPotentialInterests == ''
             ? []
             : _savedPotentialInterests.split(',').toList();
-        /* _savedData = prefs.getString('siteName');
-        _siteNameController.text = _savedData ?? '';
-        _savedData = prefs.getString('siteLink');
-        _siteLinkController.text = _savedData ?? ''; */
-        /*  _savedData = prefs.getString('image');
+        _savedData = prefs.getString('siteNames');
+        _savedSiteNames = _savedData ?? '';
+        _currentUser.siteNames =
+            _savedSiteNames == '' ? [] : _savedSiteNames.split(',').toList();
+        _savedData = prefs.getString('siteLinks');
+        _savedSiteLinks = _savedData ?? '';
+        _currentUser.siteLinks =
+            _savedSiteLinks == '' ? [] : _savedSiteLinks.split(',').toList();
+        _savedData = prefs.getString('image');
         _imagePath = _savedData ?? '';
-        _image = File(_imagePath); */
+        _image = File(_imagePath);
       },
     );
-    print(_currentUser.name);
+    /* print(_currentUser.name);
+    print(_currentUser.surname);
+    print(_currentUser.position);
+    print(_currentUser.phone);
+    print(_currentUser.email);
+    print(_currentUser.address);
+    print(_currentUser.description);
     print(_currentUser.profileType);
     print(_currentUser.interests);
+    print(_currentUser.potentialInterests);
+    print(_currentUser.siteNames);
+    print(_currentUser.siteLinks); */
+    //print('second pass: $_imagePath');
+    //print('second: $_imageTest');
   }
 
   void _saveData() async {
@@ -366,15 +371,14 @@ class _ProfileState extends State<Profile> {
     await prefs.setString('description', _currentUser.description);
     await prefs.setString('profileType', _currentUser.profileType);
     _savedInterests = _currentUser.interests.join(',').toString();
-    _savedPotentialInterests =
-        _currentUser.potentialInterests.join(',').toString();
     await prefs.setString('interests', _savedInterests);
+    _savedPotentialInterests = _currentUser.potentialInterests.join(',').toString();
     await prefs.setString('potentialInterests', _savedPotentialInterests);
-    /* print(_savedInterests);
-    print(_savedPotentialInterests); */
-    /* await prefs.setString('siteName', _currentUser.links[0]['siteName']!);
-    await prefs.setString('siteLink', _currentUser.links[0]['siteLink']!); */
-    // await prefs.setString('image', _imagePath);
+    _savedSiteNames = _currentUser.siteNames.join(',').toString();
+    await prefs.setString('siteNames', _savedSiteNames);
+    _savedSiteLinks = _currentUser.siteLinks.join(',').toString();
+    await prefs.setString('siteLinks', _savedSiteLinks);
+    await prefs.setString('image', _imagePath);
   }
 
   Future<void> _pickImage() async {
@@ -382,34 +386,32 @@ class _ProfileState extends State<Profile> {
 
     if (pickedFile != null) {
       final currentImage = File(pickedFile.path);
-      _validateImage(currentImage);
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-      _imagePath = _image.toString();
-      // print(_imagePath);
+      final isValidateImage = await _validateImage(currentImage);
+      if (isValidateImage) {
+        setState(() {
+          _image = currentImage;
+        });
+
+        _imagePath = _image!.path;
+        /* print('first pass: $_imagePath');
+        print('first: $_image'); */
+      }
     }
   }
 
-  Future<String?> _validateImage(File imageFile) async {
+  Future<bool> _validateImage(File imageFile) async {
     const List<String> allowedFormats = ['jpg', 'jpeg', 'png'];
     const int maxSize = 5 * 1024 * 1024;
 
     if (await imageFile.length() > maxSize) {
-      return 'File size exceeds 5 MB limit.';
-    }
-
-    final img.Image? image = img.decodeImage(imageFile.readAsBytesSync());
-    if (image == null) {
-      return 'Invalid image file.';
+      return false;
     }
 
     final String fileExtension = imageFile.path.split('.').last.toLowerCase();
     if (!allowedFormats.contains(fileExtension)) {
-      return 'Invalid file format. Please upload a JPG, JPEG or PNG image';
+      return false;
     }
-
-    return null;
+    return true;
   }
 
   @override
@@ -431,7 +433,7 @@ class _ProfileState extends State<Profile> {
       key: _formKey,
       child: ListView(
         children: [
-          //const AvatarUpload(),
+          //AvatarUpload(image: _image, imagePath: _imagePath),
           Center(
             child: _image == null
                 ? IconButton(
@@ -724,10 +726,8 @@ class _ProfileState extends State<Profile> {
                           color: Colors.black,
                         ),
                         'Potential interests:'),
-                    //if (_currentUser.potentialInterests.length > 0)
                     ..._currentUser.potentialInterests
                         .map((item) => InterestItem(item)),
-                    //if (_currentUser.potentialInterests.isEmpty) const Text(''),
                     IconButton(
                       color: const Color.fromARGB(255, 56, 136, 231),
                       iconSize: 28,
@@ -754,15 +754,17 @@ class _ProfileState extends State<Profile> {
               ),
               'Your links:'),
           ...List.generate(
-            _currentUser.links.length,
+            //_currentUser.links.length,
+            _currentUser.siteNames.length,
             (index) => SiteLinkItem(
-                index: index,
-                /* siteNameController: _siteNameController,
-                siteLinkController: _siteLinkController, */
-                onSaveSiteName: _saveSiteName,
-                onSaveSiteLink: _saveSiteLink,
-                onDeleteLink: _deleteLink,
-                regex: strictRegex),
+              index: index,
+              onSaveSiteName: _saveSiteName,
+              onSaveSiteLink: _saveSiteLink,
+              onDeleteLink: _deleteLink,
+              regex: strictRegex,
+              savedSiteName: _currentUser.siteNames[index],
+              savedSiteLink: _currentUser.siteLinks[index],
+            ),
           ),
 
           /* for (final item in _currentUser.links)
@@ -846,184 +848,6 @@ class _ProfileState extends State<Profile> {
               ],
             ), */
 
-          /* ListView.builder(
-            itemCount: _currentUser.links.length,
-            itemBuilder: (context, index) {
-              final item = _currentUser.links[index];
-
-              _siteNameController.text = item['siteName'] ?? '';
-              _siteLinkController.text = item['siteLink'] ?? '';
-
-              return Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: _siteNameController,
-                      focusNode: _focusNodeSiteName,
-                      decoration: const InputDecoration(
-                        border: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            style: BorderStyle.solid,
-                          ),
-                        ),
-                        hintText: 'Site name',
-                      ),
-                      validator: (value) {
-                        if (value != '') {
-                          if (value!.trim().length < 2 ||
-                              value.trim().length > 50) {
-                            return 'Site name must be between 2 and 50 characters';
-                          } else if (!strictRegex.hasMatch(value)) {
-                            return 'Only letters and spaces';
-                          }
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        if (value != null) {
-                          _currentUser.links[index]['siteName'] = value;
-                        }
-                      },
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: TextFormField(
-                      controller: _siteLinkController,
-                      focusNode: _focusNodeSiteLink,
-                      decoration: const InputDecoration(
-                        border: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            style: BorderStyle.solid,
-                          ),
-                        ),
-                        hintText: 'Link',
-                      ),
-                      validator: (value) {
-                        final trimValue = value!.trim();
-                        if (trimValue != '') {
-                          final checkedLink = isValidUrl(trimValue);
-                          if (checkedLink) {
-                            if (trimValue.length < 8 ||
-                                trimValue.length > 200) {
-                              return 'Link must be no longer than 200 characters';
-                            }
-                            return null;
-                          } else {
-                            return 'Invalid Link';
-                          }
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        if (value != null) {
-                          _currentUser.links[index]['siteLink'] = value;
-                        }
-                      },
-                    ),
-                  ),
-                  IconButton(
-                    color: const Color.fromARGB(255, 28, 27, 31),
-                    iconSize: 32,
-                    onPressed: () {
-                      _deleteLink(
-                          index); // Pass the index to the delete function
-                    },
-                    icon: const Icon(Icons.delete_forever_sharp),
-                  ),
-                ],
-              );
-            },
-          ), */
-
-/*             ListView.builder(
-              itemCount: _currentUser.links.length,
-              itemBuilder: (context, index) {
-                return Row(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        //controller: _siteNameController,
-                        focusNode: _focusNodeSiteName,
-                        //maxLength: 50,
-                        decoration: const InputDecoration(
-                          border: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              style: BorderStyle.solid,
-                            ),
-                          ),
-                          hintText: 'Site name',
-                        ),
-                        validator: (value) {
-                          if (value != '') {
-                            if (value!.trim().length < 2 ||
-                                value.trim().length > 50) {
-                              return 'Site name must be between 2 and 50 characters';
-                            } else if (!strictRegex.hasMatch(value)) {
-                              return 'Only letters and spaces';
-                            }
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          if (value != null) {
-                            _currentUser.links[index]['siteName'] = value;
-                          }
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: TextFormField(
-                        //controller: _siteLinkController,
-                        focusNode: _focusNodeSiteLink,
-                        //maxLength: 200,
-                        decoration: const InputDecoration(
-                          border: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              style: BorderStyle.solid,
-                            ),
-                          ),
-                          hintText: 'Link',
-                        ),
-                        validator: (value) {
-                          final trimValue = value!.trim();
-                          if (trimValue != '') {
-                            final checkedLink = isValidUrl(trimValue);
-                            if (checkedLink) {
-                              if (trimValue.length < 8 ||
-                                  trimValue.length > 200) {
-                                return 'Link must be no longer then 200 characters';
-                              }
-                              return null;
-                            } else {
-                              return 'Invalid Link';
-                            }
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          if (value != null) {
-                            _currentUser.links[index]['siteLink'] = value;
-                          }
-                        },
-                      ),
-                    ),
-                    IconButton(
-                      color: const Color.fromARGB(255, 28, 27, 31),
-                      iconSize: 32,
-                      onPressed: () {},
-                      icon: const Icon(Icons.delete_forever_sharp),
-                    ),
-                  ],
-                );
-              },
-            ), */
-
           IconButton(
             alignment: Alignment.centerLeft,
             color: const Color.fromARGB(255, 56, 136, 231),
@@ -1033,7 +857,7 @@ class _ProfileState extends State<Profile> {
           ),
 
           const SizedBox(
-            height: 30,
+            height: 10,
           ),
 
           Row(
@@ -1049,12 +873,14 @@ class _ProfileState extends State<Profile> {
               ElevatedButton(
                 onPressed: () {
                   _saveProfile();
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Profile successfully saved!'),
-                    ),
-                  );
+                  if (isSucsessSave) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Profile successfully saved!'),
+                      ),
+                    );
+                    isSucsessSave = false;
+                  }
                 },
                 child: const Text('Save'),
               ),

@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
 
-
 class SiteLinkItem extends StatefulWidget {
   const SiteLinkItem({
     super.key,
     required this.index,
-    /* required this.siteNameController,
-    required this.siteLinkController, */
     required this.onSaveSiteName,
     required this.onSaveSiteLink,
     required this.onDeleteLink,
     required this.regex,
+    required this.savedSiteName,
+    required this.savedSiteLink,
   });
 
   final int index;
-  /* final TextEditingController siteNameController;
-  final TextEditingController siteLinkController; */
-  /* final void Function(int index) onSaveSiteName;
-  final void Function(int index) onSaveSiteLink; */
   final void Function(int index, String value) onSaveSiteName;
   final void Function(int index, String value) onSaveSiteLink;
   final void Function(int index) onDeleteLink;
   final RegExp regex;
+  final String savedSiteName;
+  final String savedSiteLink;
 
   @override
   State<SiteLinkItem> createState() {
@@ -31,15 +28,15 @@ class SiteLinkItem extends StatefulWidget {
 
 class _SiteLinkItemState extends State<SiteLinkItem> {
 
-  final TextEditingController _siteNameController = TextEditingController();
-  final TextEditingController _siteLinkController = TextEditingController();
+  late final TextEditingController _siteNameController = TextEditingController(text: widget.savedSiteName);
+  late final TextEditingController _siteLinkController = TextEditingController(text: widget.savedSiteLink);
 
-  /* bool isValidUrl(String url) {
+  bool isValidUrl(String url) {
     final Uri? uri = Uri.tryParse(url);
     return uri != null && (uri.scheme == 'http' || uri.scheme == 'https');
-  } */
+  }
 
- @override
+  @override
   void dispose() {
     _siteNameController.dispose();
     _siteLinkController.dispose();
@@ -48,13 +45,19 @@ class _SiteLinkItemState extends State<SiteLinkItem> {
 
   @override
   Widget build(BuildContext context) {
+    /* _siteNameController.text = widget.savedSiteName;
+    _siteLinkController.text = widget.savedSiteLink; */
+
+    /* print(widget.savedSiteName);
+    print(widget.savedSiteName);
+    print(widget.savedSiteLink);
+    print(widget.savedSiteLink); */
+
     return Row(
       children: [
         Expanded(
           child: TextFormField(
-            //controller: widget.siteNameController,
             controller: _siteNameController,
-            // focusNode: _focusNodeSiteName,
             //maxLength: 50,
             decoration: const InputDecoration(
               border: UnderlineInputBorder(
@@ -64,32 +67,32 @@ class _SiteLinkItemState extends State<SiteLinkItem> {
               ),
               hintText: 'Site name',
             ),
-            /* validator: (value) {
-              if (value != '') {
-                if (value!.trim().length < 2 || value.trim().length > 50) {
-                  return 'Site name must be between 2 and 50 characters';
-                } else if (widget.regex.hasMatch(value)) {
-                  return 'Only letters and spaces';
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'empty field';
+              } else if (value != '') {
+                if (value.trim().length < 2 || value.trim().length > 50) {
+                  return 'no nolger 50 char';
+                } else if (!widget.regex.hasMatch(value)) {
+                  return 'letters and spaces';
                 }
               }
               return null;
-            }, */
+            },
             onSaved: (value) {
-                      if (value != null) {
-                        widget.onSaveSiteName(widget.index, value);
-                        //_currentUser.links[0]['siteName'] = value;
-                      }
-                    },
+              if (value != null) {
+                widget.onSaveSiteName(widget.index, value);
+                //_currentUser.links[0]['siteName'] = value;
+              }
+            },
           ),
         ),
         const SizedBox(
-          width: 10,
+          width: 20,
         ),
         Expanded(
           child: TextFormField(
-            //controller: widget.siteLinkController,
             controller: _siteLinkController,
-            //focusNode: _focusNodeSiteLink,
             //maxLength: 200,
             decoration: const InputDecoration(
               border: UnderlineInputBorder(
@@ -99,28 +102,32 @@ class _SiteLinkItemState extends State<SiteLinkItem> {
               ),
               hintText: 'Link',
             ),
-            /*               validator: (value) {
-              final trimValue = value!.trim();
-              if (trimValue != '') {
-                final checkedLink = isValidUrl(trimValue);
-                if (checkedLink) {
+            validator: (value) {
+              if (value == null || value.isEmpty || value == '') {
+                return 'empty field';
+              } else {
+                final trimValue = value.trim();
+                final isValidLink = isValidUrl(trimValue);
+                if (isValidLink) {
                   if (trimValue.length < 8 || trimValue.length > 200) {
-                    return 'Link must be no longer then 200 characters';
+                    return 'no longer 200 char';
                   }
                   return null;
                 } else {
                   return 'Invalid Link';
                 }
               }
-              return null;
-            }, */
+            },
             onSaved: (value) {
-                      if (value != null) {
-                        widget.onSaveSiteLink(widget.index, value);
-                        //_currentUser.links[0]['siteLink'] = value;
-                      }
-                    },
+              if (value != null) {
+                widget.onSaveSiteLink(widget.index, value);
+                //_currentUser.links[0]['siteLink'] = value;
+              }
+            },
           ),
+        ),
+        const SizedBox(
+          width: 20,
         ),
         IconButton(
           color: const Color.fromARGB(255, 28, 27, 31),
