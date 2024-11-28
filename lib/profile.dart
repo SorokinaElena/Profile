@@ -5,9 +5,8 @@ import 'package:profile/models/profile_model.dart';
 import 'package:profile/interests/interest_item.dart';
 import 'package:profile/interests/new_interest_item.dart';
 import 'package:profile/site_link_item.dart';
-//import 'package:profile/avatar_upload.dart';
 import 'package:image_picker/image_picker.dart';
-//import 'package:image/image.dart' as img;
+
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -33,12 +32,6 @@ class _ProfileState extends State<Profile> {
     profileType: 'Private',
     interests: [],
     potentialInterests: [],
-    /* links: [
-      {
-        'siteName': '',
-        'siteLink': '',
-      },
-    ], */
     siteNames: [],
     siteLinks: [],
   );
@@ -186,43 +179,26 @@ class _ProfileState extends State<Profile> {
     setState(() {
       _currentUser.siteNames.add('');
       _currentUser.siteLinks.add('');
-      /* _currentUser.links.add({
-        'siteName': '',
-        'siteLink': '',
-      }); */
     });
   }
 
   void _saveSiteName(int index, String value) {
     setState(() {
       _currentUser.siteNames[index] = value;
-      //_currentUser.links[index]['siteName'] = value;
     });
-    //_siteNameController.clear();
-    //print(_currentUser.siteNames);
   }
 
   void _saveSiteLink(int index, String value) {
     setState(() {
       _currentUser.siteLinks[index] = value;
-      // _currentUser.links[index]['siteLink'] = value;
     });
-    //_siteLinkController.clear();
-    // print(_currentUser.siteLinks);
   }
 
   void _deleteLink(int index) {
     setState(() {
       _currentUser.siteNames.removeAt(index);
       _currentUser.siteLinks.removeAt(index);
-      /* for (int i = 0; i < _currentUser.siteNames.length; i++) {
-      _saveSiteName(i, _currentUser.siteNames[i]);
-    }
-    for (int i = 0; i < _currentUser.siteLinks.length; i++) {
-      _saveSiteLink(i, _currentUser.siteLinks[i]);
-    } */
     });
-    // print(index);
   }
 
   void _saveProfile() {
@@ -240,18 +216,6 @@ class _ProfileState extends State<Profile> {
       _focusNodeSiteLink.unfocus();
       isSucsessSave = true;
     }
-    /* print(_currentUser.name);
-    print(_currentUser.surname);
-    print(_currentUser.position);
-    print(_currentUser.phone);
-    print(_currentUser.email);
-    print(_currentUser.address);
-    print(_currentUser.description);
-    print(_currentUser.profileType);
-    print(_currentUser.interests);
-    print(_currentUser.potentialInterests);
-    print(_currentUser.siteNames);
-    print(_currentUser.siteLinks); */
   }
 
   void _resetProfile() {
@@ -267,12 +231,6 @@ class _ProfileState extends State<Profile> {
       _currentUser.profileType = 'Private';
       _currentUser.interests = [];
       _currentUser.potentialInterests = [];
-      /* _currentUser.links = [
-        {
-          'siteName': '',
-          'siteLink': '',
-        },
-      ]; */
       _currentUser.siteNames = [];
       _currentUser.siteLinks = [];
     });
@@ -344,20 +302,6 @@ class _ProfileState extends State<Profile> {
         _image = File(_imagePath);
       },
     );
-    /* print(_currentUser.name);
-    print(_currentUser.surname);
-    print(_currentUser.position);
-    print(_currentUser.phone);
-    print(_currentUser.email);
-    print(_currentUser.address);
-    print(_currentUser.description);
-    print(_currentUser.profileType);
-    print(_currentUser.interests);
-    print(_currentUser.potentialInterests);
-    print(_currentUser.siteNames);
-    print(_currentUser.siteLinks); */
-    //print('second pass: $_imagePath');
-    //print('second: $_imageTest');
   }
 
   void _saveData() async {
@@ -393,8 +337,6 @@ class _ProfileState extends State<Profile> {
         });
 
         _imagePath = _image!.path;
-        /* print('first pass: $_imagePath');
-        print('first: $_image'); */
       }
     }
   }
@@ -433,7 +375,6 @@ class _ProfileState extends State<Profile> {
       key: _formKey,
       child: ListView(
         children: [
-          //AvatarUpload(image: _image, imagePath: _imagePath),
           Center(
             child: _image == null
                 ? IconButton(
@@ -457,7 +398,6 @@ class _ProfileState extends State<Profile> {
           TextFormField(
             controller: _nameController,
             focusNode: _focusNodeName,
-            //maxLength: 50,
             decoration: const InputDecoration(
               hintText: 'Name',
             ),
@@ -482,7 +422,6 @@ class _ProfileState extends State<Profile> {
           TextFormField(
             controller: _surnameController,
             focusNode: _focusNodeSurname,
-            //maxLength: 50,
             decoration: const InputDecoration(
               hintText: 'Surname',
             ),
@@ -507,7 +446,6 @@ class _ProfileState extends State<Profile> {
           TextFormField(
             controller: _positionController,
             focusNode: _focusNodePosition,
-            //maxLength: 100,
             decoration: const InputDecoration(
               hintText: 'Position',
             ),
@@ -533,7 +471,6 @@ class _ProfileState extends State<Profile> {
           TextFormField(
             controller: _phoneController,
             focusNode: _focusNodePhone,
-            //maxLength: 15,
             decoration: const InputDecoration(
               hintText: 'Phone number',
             ),
@@ -558,7 +495,6 @@ class _ProfileState extends State<Profile> {
           TextFormField(
             controller: _emailController,
             focusNode: _focusNodeEmail,
-            //maxLength: 50,
             decoration: const InputDecoration(
               hintText: 'Email',
             ),
@@ -583,7 +519,6 @@ class _ProfileState extends State<Profile> {
           TextFormField(
             controller: _addressController,
             focusNode: _focusNodeAddress,
-            //maxLength: 200,
             decoration: const InputDecoration(
               hintText: 'Address',
             ),
@@ -609,7 +544,6 @@ class _ProfileState extends State<Profile> {
           TextFormField(
             controller: _descriptionController,
             focusNode: _focusNodeDescription,
-            //maxLength: 200,
             decoration: const InputDecoration(
               hintText: 'Description',
             ),
@@ -754,7 +688,6 @@ class _ProfileState extends State<Profile> {
               ),
               'Your links:'),
           ...List.generate(
-            //_currentUser.links.length,
             _currentUser.siteNames.length,
             (index) => SiteLinkItem(
               index: index,
@@ -766,87 +699,6 @@ class _ProfileState extends State<Profile> {
               savedSiteLink: _currentUser.siteLinks[index],
             ),
           ),
-
-          /* for (final item in _currentUser.links)
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: _siteNameController0,
-                    focusNode: _focusNodeSiteName,
-                    //maxLength: 50,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          style: BorderStyle.solid,
-                        ),
-                      ),
-                      hintText: 'Site name',
-                    ),
-                    validator: (value) {
-                      if (value != '') {
-                        if (value!.trim().length < 2 ||
-                            value.trim().length > 50) {
-                          return 'Site name must be between 2 and 50 characters';
-                        } else if (!strictRegex.hasMatch(value)) {
-                          return 'Only letters and spaces';
-                        }
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      if (value != null) {
-                        _currentUser.links[0]['siteName'] = value;
-                      }
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: TextFormField(
-                    controller: _siteLinkController0,
-                    focusNode: _focusNodeSiteLink,
-                    //maxLength: 200,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          style: BorderStyle.solid,
-                        ),
-                      ),
-                      hintText: 'Link',
-                    ),
-                    validator: (value) {
-                      final trimValue = value!.trim();
-                      if (trimValue != '') {
-                        final checkedLink = isValidUrl(trimValue);
-                        if (checkedLink) {
-                          if (trimValue.length < 8 || trimValue.length > 200) {
-                            return 'Link must be no longer then 200 characters';
-                          }
-                          return null;
-                        } else {
-                          return 'Invalid Link';
-                        }
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      if (value != null) {
-                        _currentUser.links[0]['siteLink'] = value;
-                      }
-                    },
-                  ),
-                ),
-                IconButton(
-                  color: const Color.fromARGB(255, 28, 27, 31),
-                  iconSize: 32,
-                  onPressed: () => _deleteLink(item),
-                  icon: const Icon(Icons.delete_forever_sharp),
-                ),
-              ],
-            ), */
 
           IconButton(
             alignment: Alignment.centerLeft,

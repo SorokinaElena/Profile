@@ -45,20 +45,12 @@ class _SiteLinkItemState extends State<SiteLinkItem> {
 
   @override
   Widget build(BuildContext context) {
-    /* _siteNameController.text = widget.savedSiteName;
-    _siteLinkController.text = widget.savedSiteLink; */
-
-    /* print(widget.savedSiteName);
-    print(widget.savedSiteName);
-    print(widget.savedSiteLink);
-    print(widget.savedSiteLink); */
 
     return Row(
       children: [
         Expanded(
           child: TextFormField(
             controller: _siteNameController,
-            //maxLength: 50,
             decoration: const InputDecoration(
               border: UnderlineInputBorder(
                 borderSide: BorderSide(
@@ -82,7 +74,6 @@ class _SiteLinkItemState extends State<SiteLinkItem> {
             onSaved: (value) {
               if (value != null) {
                 widget.onSaveSiteName(widget.index, value);
-                //_currentUser.links[0]['siteName'] = value;
               }
             },
           ),
@@ -93,7 +84,6 @@ class _SiteLinkItemState extends State<SiteLinkItem> {
         Expanded(
           child: TextFormField(
             controller: _siteLinkController,
-            //maxLength: 200,
             decoration: const InputDecoration(
               border: UnderlineInputBorder(
                 borderSide: BorderSide(
@@ -121,7 +111,6 @@ class _SiteLinkItemState extends State<SiteLinkItem> {
             onSaved: (value) {
               if (value != null) {
                 widget.onSaveSiteLink(widget.index, value);
-                //_currentUser.links[0]['siteLink'] = value;
               }
             },
           ),
