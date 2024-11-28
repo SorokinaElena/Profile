@@ -219,31 +219,7 @@ class _ProfileState extends State<Profile> {
   }
 
   void _resetProfile() {
-    _formKey.currentState!.reset();
-    setState(() {
-      _currentUser.name = '';
-      _currentUser.surname = '';
-      _currentUser.position = '';
-      _currentUser.phone = '';
-      _currentUser.email = '';
-      _currentUser.address = '';
-      _currentUser.description = '';
-      _currentUser.profileType = 'Private';
-      _currentUser.interests = [];
-      _currentUser.potentialInterests = [];
-      _currentUser.siteNames = [];
-      _currentUser.siteLinks = [];
-    });
-    _focusNodeName.unfocus();
-    _focusNodeSurname.unfocus();
-    _focusNodePosition.unfocus();
-    _focusNodePhone.unfocus();
-    _focusNodeEmail.unfocus();
-    _focusNodeAddress.unfocus();
-    _focusNodeDescription.unfocus();
-    _focusNodeSiteName.unfocus();
-    _focusNodeSiteLink.unfocus();
-    _saveData();
+    _loadData();
   }
 
   void _loadData() async {
@@ -252,32 +228,25 @@ class _ProfileState extends State<Profile> {
       () {
         _savedData = prefs.getString('name');
         _nameController.text = _savedData ?? '';
+        _currentUser.name = _nameController.text;
         _savedData = prefs.getString('surname');
         _surnameController.text = _savedData ?? '';
+        _currentUser.surname =_surnameController.text;
         _savedData = prefs.getString('position');
         _positionController.text = _savedData ?? '';
+        _currentUser.position = _positionController.text;
         _savedData = prefs.getString('phone');
         _phoneController.text = _savedData ?? '';
+        _currentUser.phone = _phoneController.text;
         _savedData = prefs.getString('email');
         _emailController.text = _savedData ?? '';
+        _currentUser.email = _emailController.text;
         _savedData = prefs.getString('address');
         _addressController.text = _savedData ?? '';
+        _currentUser.address = _addressController.text;
         _savedData = prefs.getString('description');
         _descriptionController.text = _savedData ?? '';
-        _savedData = prefs.getString('name');
-        _currentUser.name = _savedData ?? '';
-        _savedData = prefs.getString('surname');
-        _currentUser.surname = _savedData ?? '';
-        _savedData = prefs.getString('position');
-        _currentUser.position = _savedData ?? '';
-        _savedData = prefs.getString('phone');
-        _currentUser.phone = _savedData ?? '';
-        _savedData = prefs.getString('email');
-        _currentUser.email = _savedData ?? '';
-        _savedData = prefs.getString('address');
-        _currentUser.address = _savedData ?? '';
-        _savedData = prefs.getString('description');
-        _currentUser.description = _savedData ?? '';
+        _currentUser.description = _descriptionController.text;
         _savedData = prefs.getString('profileType');
         _currentUser.profileType = _savedData ?? 'Private';
         _savedData = prefs.getString('interests');
@@ -299,7 +268,7 @@ class _ProfileState extends State<Profile> {
             _savedSiteLinks == '' ? [] : _savedSiteLinks.split(',').toList();
         _savedData = prefs.getString('image');
         _imagePath = _savedData ?? '';
-        _image = File(_imagePath);
+        _image = _imagePath != '' ? File(_imagePath) : null;
       },
     );
   }
@@ -326,6 +295,7 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<void> _pickImage() async {
+    try {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
@@ -339,6 +309,9 @@ class _ProfileState extends State<Profile> {
         _imagePath = _image!.path;
       }
     }
+    }
+    // ignore: empty_catches
+    catch(e){}
   }
 
   Future<bool> _validateImage(File imageFile) async {
