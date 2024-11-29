@@ -663,6 +663,7 @@ class _ProfileState extends State<Profile> {
           ...List.generate(
             _currentUser.siteNames.length,
             (index) => SiteLinkItem(
+              key: ValueKey(_currentUser.siteLinks[index]),
               index: index,
               onSaveSiteName: _saveSiteName,
               onSaveSiteLink: _saveSiteLink,
